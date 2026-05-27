@@ -1,0 +1,224 @@
+﻿<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Аутентифікація — SudoHardware</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-flex">
+      <div class="logo-area">
+        <h1 class="logo">SudoHardware</h1>
+      </div>
+
+      <button
+        id="mobileMenuBtn"
+        class="mobile-menu-btn"
+        aria-label="Меню"
+        type="button"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html">Головна</a>
+        <a href="products.html">Каталог</a>
+        <a href="index.html#contact">Контакти</a>
+      </nav>
+      <div class="header-actions">
+        <button id="cartBtn" class="cart-btn">
+          <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          </span>
+          <span class="cart-text">Кошик</span>
+          <span id="cartCount" class="badge">0</span>
+        </button>
+        <button id="authBtn" class="btn btn-outline">Увійти</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container auth-main">
+    <section class="auth-layout" aria-labelledby="authTitle">
+      <aside class="auth-context">
+        <p class="auth-kicker">Безпечний доступ до кабінету</p>
+        <h2 id="authTitle">Особистий кабінет SudoHardware</h2>
+        <p class="auth-context-text">
+          Увійдіть у свій акаунт для швидкого checkout, перегляду замовлень та керування профілем.
+        </p>
+
+        <div class="auth-points">
+          <div class="auth-point">
+            <span class="auth-point-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </span>
+            <p>Автозаповнення контактних даних під час оформлення замовлення.</p>
+          </div>
+          <div class="auth-point">
+            <span class="auth-point-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </span>
+            <p>Історія та актуальні статуси ваших замовлень в одному місці.</p>
+          </div>
+          <div class="auth-point">
+            <span class="auth-point-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </span>
+            <p>Захищена сесія з перевіркою токена та контролем ролей.</p>
+          </div>
+        </div>
+      </aside>
+
+      <div class="auth-card">
+        <div class="auth-tabs" role="tablist" aria-label="Форми авторизації">
+          <button id="loginTab" type="button" class="tab-button active auth-tab-button" onclick="switchTab('login')">
+            Вхід
+          </button>
+          <button id="registerTab" type="button" class="tab-button auth-tab-button" onclick="switchTab('register')">
+            Реєстрація
+          </button>
+        </div>
+
+        <div id="authMessage" class="auth-message" role="alert" aria-live="polite"></div>
+
+        <form id="loginForm" class="auth-form is-visible" onsubmit="handleLogin(event)">
+          <h2>Вхід до кабінету</h2>
+
+          <div class="form-group">
+            <label class="form-label" for="email-input">Email або ім'я користувача:</label>
+            <input
+              type="text"
+              id="email-input"
+              placeholder="ім'я@пошта.com або username"
+              pattern="^[^\s]+$"
+              title="Введіть email або username без пробілів"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password-input">Пароль:</label>
+            <input type="password" id="password-input" placeholder="••••••••" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large">Увійти</button>
+
+          <p class="auth-helper-text">
+            Немаєте облікового запису?
+            <a href="#" class="auth-link" onclick="switchTab('register'); return false;">Зареєструватися</a>
+          </p>
+        </form>
+
+        <form id="registerForm" class="auth-form" onsubmit="handleRegister(event)">
+          <h2>Створити акаунт</h2>
+
+          <div class="form-group">
+            <label class="form-label" for="register-username">Ім'я користувача:</label>
+            <input
+              type="text"
+              id="register-username"
+              placeholder="vasya_pro"
+              pattern="^[a-zA-Z0-9_]{3,50}$"
+              title="Від 3 до 50 символів (букви, цифри, _)"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="register-email">Email-адреса:</label>
+            <input
+              type="email"
+              id="register-email"
+              placeholder="ім'я@пошта.com"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="register-phone">Телефон (необов'язково):</label>
+            <input
+              type="tel"
+              id="register-phone"
+              placeholder="+380991234567"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="register-default-address">Адреса за замовчуванням (необов'язково):</label>
+            <textarea
+              id="register-default-address"
+              placeholder="м. Київ, вул. Хрещатик, 1"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="register-password">Пароль:</label>
+            <input
+              type="password"
+              id="register-password"
+              placeholder="••••••••"
+              minlength="8"
+              title="Мінімум 8 символів"
+              required
+            >
+            <small class="auth-note">Мінімум 8 символів, літера і цифра</small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="register-password-confirm">Підтвердження пароля:</label>
+            <input
+              type="password"
+              id="register-password-confirm"
+              placeholder="••••••••"
+              minlength="8"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large">Зареєструватися</button>
+
+          <p class="auth-helper-text">
+            Вже маєте обліковий запис?
+            <a href="#" class="auth-link" onclick="switchTab('login'); return false;">Увійти</a>
+          </p>
+        </form>
+
+        <p class="auth-security-tip">Працюємо лише через захищені API-запити та валідацію на сервері.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="cartModal" class="cart-modal" aria-hidden="true">
+    <div class="cart-panel modern-glass">
+      <button id="closeCart" class="close">✕</button>
+      <h3>Ваш кошик</h3>
+      <div id="cart-container" class="cart-items-list"></div>
+      <div class="cart-footer">
+        <div class="cart-summary">
+          <div class="summary-line">Разом: <strong id="cartTotal">0</strong> грн</div>
+        </div>
+        <button id="checkoutBtn" class="btn btn-primary w-100" onclick="checkout()">Оформити замовлення</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>© 2026 SudoHardware. Усі права захищені.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

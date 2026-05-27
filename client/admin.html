@@ -1,0 +1,440 @@
+﻿<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Адміністрація — SudoHardware</title>
+  <script>
+    (function guardAdminBeforeRender() {
+      try {
+        const token = localStorage.getItem('rtk_token');
+        const userRaw = localStorage.getItem('rtk_user');
+        const user = userRaw ? JSON.parse(userRaw) : null;
+
+        if (!token || !user || user.role !== 'admin') {
+          window.location.replace('auth.html');
+        }
+      } catch (error) {
+        window.location.replace('auth.html');
+      }
+    })();
+  </script>
+  <style>
+    html:not(.admin-authorized) body {
+      visibility: hidden;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-flex">
+      <div class="logo-area">
+        <h1 class="logo">SudoHardware</h1>
+      </div>
+
+      <button
+        id="mobileMenuBtn"
+        class="mobile-menu-btn"
+        aria-label="Меню"
+        type="button"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html">Головна</a>
+        <a href="products.html">Каталог</a>
+        <a href="index.html#contact">Контакти</a>
+      </nav>
+      <div class="header-actions">
+        <button id="adminUserBtn" class="btn btn-outline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: text-bottom;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          Адмін
+        </button>
+        <button id="logoutBtn" class="btn btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: text-bottom;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          Вийти
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container admin-main">
+    <div class="admin-tabs">
+      <button class="admin-tab-btn active" data-tab="dashboard" onclick="switchAdminTab('dashboard')">Панель</button>
+      <button class="admin-tab-btn" data-tab="products" onclick="switchAdminTab('products')">Товари</button>
+      <button class="admin-tab-btn" data-tab="orders" onclick="switchAdminTab('orders')">
+        Замовлення <span class="admin-tab-indicator" aria-hidden="true">НОВЕ</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="reviews" onclick="switchAdminTab('reviews')">
+        Відгуки <span class="admin-tab-indicator" aria-hidden="true">НОВЕ</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="contacts" onclick="switchAdminTab('contacts')">Контакти</button>
+    </div>
+
+    <section id="dashboardTab" class="admin-tab-content is-visible">
+      <h2>Адміністративна панель</h2>
+
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card admin-stat-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px; opacity: 0.8;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+          <p>Усього товарів</p>
+          <h3 id="totalProducts">—</h3>
+        </div>
+        <div class="admin-stat-card admin-stat-warning">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px; opacity: 0.8;"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          <p>Замовлень</p>
+          <h3 id="totalOrders">—</h3>
+        </div>
+        <div class="admin-stat-card admin-stat-success">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px; opacity: 0.8;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <p>Повідомлень</p>
+          <h3 id="totalContacts">—</h3>
+        </div>
+        <div class="admin-stat-card admin-stat-info">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px; opacity: 0.8;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <p>Користувачів</p>
+          <h3 id="totalUsers">—</h3>
+        </div>
+      </div>
+
+      <div class="admin-panel-card">
+        <h3>Швидкі дії</h3>
+        <div class="admin-actions-grid">
+          <button class="btn btn-primary" onclick="switchAdminTab('products')">Додати товар</button>
+          <button class="btn btn-primary" onclick="switchAdminTab('orders')">Замовлення</button>
+          <button class="btn btn-primary" onclick="switchAdminTab('reviews')">Відгуки</button>
+          <button class="btn btn-primary" onclick="switchAdminTab('contacts')">Контакти</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="productsTab" class="admin-tab-content">
+      <h2>Управління товарами</h2>
+
+      <div class="admin-panel-card admin-panel-spacing">
+        <h3 id="productFormTitle">Додати новий товар</h3>
+        <form id="addProductForm" onsubmit="handleAddProduct(event)">
+          <div class="admin-form-grid">
+            <input type="text" id="product-name" placeholder="Назва товару" required>
+            <input type="number" id="product-price" placeholder="Ціна" step="0.01" required>
+            <select id="product-category" onchange="updateProductSpecs()" required>
+              <option value="">Виберіть категорію</option>
+              <option value="cpu">Процесори (CPU)</option>
+              <option value="gpu">Відеокарти (GPU)</option>
+              <option value="ram">Пам'ять (RAM)</option>
+              <option value="ssd">SSD накопичувачі</option>
+              <option value="hdd">HDD накопичувачі</option>
+              <option value="mobo">Материнські плати</option>
+              <option value="psu">Блоки живлення</option>
+            </select>
+            <input type="number" id="product-stock" placeholder="Кількість у наявності" required>
+            <textarea id="product-description" class="span-full" placeholder="Опис товару" rows="3"></textarea>
+            <input type="url" id="product-image-url" class="span-full" placeholder="URL фото (необов'язково)">
+            <input type="file" id="product-image-file" class="span-full" accept="image/png,image/jpeg,image/webp,image/gif">
+          </div>
+
+          <div id="specsContainer" class="admin-specs-wrap">
+            <h4>Характеристики</h4>
+
+            <div id="gpuSpecs" class="specs-section">
+              <div class="specs-grid">
+                <div>
+                  <label for="gpu-manufacturer">Виробник</label>
+                  <select id="gpu-manufacturer" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="NVIDIA">NVIDIA</option>
+                    <option value="AMD">AMD</option>
+                    <option value="Intel">Intel</option>
+                    <option value="other">Інше (введіть вручну)</option>
+                  </select>
+                  <input type="text" id="gpu-manufacturer-custom" class="spec-field spec-custom-input" placeholder="Введіть виробника">
+                </div>
+                <div>
+                  <label for="gpu-memory">Об'єм пам'яті (GB)</label>
+                  <select id="gpu-memory" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="4gb">4GB</option>
+                    <option value="6gb">6GB</option>
+                    <option value="8gb">8GB</option>
+                    <option value="10gb">10GB</option>
+                    <option value="12gb">12GB</option>
+                    <option value="16gb">16GB</option>
+                    <option value="24gb">24GB</option>
+                    <option value="other">Інше (введіть вручну)</option>
+                  </select>
+                  <input type="text" id="gpu-memory-custom" class="spec-field spec-custom-input" placeholder="Введіть розмір пам'яті">
+                </div>
+                <div>
+                  <label for="gpu-series">Серія</label>
+                  <select id="gpu-series" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="rtx40">NVIDIA RTX 40 Series</option>
+                    <option value="rtx30">NVIDIA RTX 30 Series</option>
+                    <option value="rtx20">NVIDIA RTX 20 Series</option>
+                    <option value="gtx16">NVIDIA GTX 16 Series</option>
+                    <option value="rx7000">AMD RX 7000 Series</option>
+                    <option value="rx6000">AMD RX 6000 Series</option>
+                    <option value="other">Інше (введіть вручну)</option>
+                  </select>
+                  <input type="text" id="gpu-series-custom" class="spec-field spec-custom-input" placeholder="Введіть серію">
+                </div>
+                <div>
+                  <label for="gpu-interface">Інтерфейс</label>
+                  <select id="gpu-interface" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="pci-e-5">PCIe 5.0</option>
+                    <option value="pci-e-4">PCIe 4.0</option>
+                    <option value="pci-e-3">PCIe 3.0</option>
+                    <option value="other">Інше (введіть вручну)</option>
+                  </select>
+                  <input type="text" id="gpu-interface-custom" class="spec-field spec-custom-input" placeholder="Введіть інтерфейс (напр. PCIe 6.0)">
+                </div>
+              </div>
+            </div>
+
+            <div id="cpuSpecs" class="specs-section">
+              <div class="specs-grid">
+                <div>
+                  <label for="cpu-manufacturer">Виробник</label>
+                  <select id="cpu-manufacturer" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="Intel">Intel</option>
+                    <option value="AMD">AMD</option>
+                    <option value="other">Інше (введіть вручну)</option>
+                  </select>
+                  <input type="text" id="cpu-manufacturer-custom" class="spec-field spec-custom-input" placeholder="Введіть виробника">
+                </div>
+                <div>
+                  <label for="cpu-cores">Кількість ядер</label>
+                  <input type="number" id="cpu-cores" class="spec-field" placeholder="Кількість ядер" min="1">
+                </div>
+                <div>
+                  <label for="cpu-threads">Потоків</label>
+                  <input type="number" id="cpu-threads" class="spec-field" placeholder="Кількість потоків" min="1">
+                </div>
+                <div>
+                  <label for="cpu-socket">Сокет</label>
+                  <select id="cpu-socket" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="lga1700">LGA1700 (Intel 12/13/14 Gen)</option>
+                    <option value="lga1200">LGA1200 (Intel 10/11 Gen)</option>
+                    <option value="am5">AM5 (AMD Ryzen 7000)</option>
+                    <option value="am4">AM4 (AMD Ryzen 5000)</option>
+                    <option value="other">Інше</option>
+                  </select>
+                  <input type="text" id="cpu-socket-custom" class="spec-field spec-custom-input" placeholder="Введіть сокет">
+                </div>
+                <div>
+                  <label for="cpu-tdp">TDP (W)</label>
+                  <input type="number" id="cpu-tdp" class="spec-field" placeholder="TDP у Вт" min="1">
+                </div>
+              </div>
+            </div>
+
+            <div id="ramSpecs" class="specs-section">
+              <div class="specs-grid">
+                <div>
+                  <label for="ram-capacity">Ємність (GB)</label>
+                  <input type="number" id="ram-capacity" class="spec-field" placeholder="Ємність у GB" min="1">
+                </div>
+                <div>
+                  <label for="ram-type">Тип</label>
+                  <select id="ram-type" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="ddr5">DDR5</option>
+                    <option value="ddr4">DDR4</option>
+                    <option value="ddr3">DDR3</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="ram-speed">Частота (MHz)</label>
+                  <input type="number" id="ram-speed" class="spec-field" placeholder="Частота MHz" min="1">
+                </div>
+              </div>
+            </div>
+
+            <div id="ssdSpecs" class="specs-section">
+              <div class="specs-grid">
+                <div>
+                  <label for="ssd-capacity">Ємність (GB)</label>
+                  <input type="number" id="ssd-capacity" class="spec-field" placeholder="Ємність у GB" min="1">
+                </div>
+                <div>
+                  <label for="ssd-type">Тип</label>
+                  <select id="ssd-type" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="nvme-m2">NVMe M.2</option>
+                    <option value="sata">SATA 2.5"</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="ssd-speed">Читання (MB/s)</label>
+                  <input type="number" id="ssd-speed" class="spec-field" placeholder="Швидкість читання" min="1">
+                </div>
+              </div>
+            </div>
+
+            <div id="hddSpecs" class="specs-section">
+              <div class="specs-grid">
+                <div>
+                  <label for="hdd-capacity">Ємність (GB)</label>
+                  <input type="number" id="hdd-capacity" class="spec-field" placeholder="Ємність у GB" min="1">
+                </div>
+                <div>
+                  <label for="hdd-rpm">Частота (RPM)</label>
+                  <select id="hdd-rpm" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="5400">5400 RPM</option>
+                    <option value="7200">7200 RPM</option>
+                    <option value="10000">10000 RPM</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="hdd-cache">Кеш (MB)</label>
+                  <input type="number" id="hdd-cache" class="spec-field" placeholder="Кеш у MB" min="1">
+                </div>
+              </div>
+            </div>
+
+            <div id="moboSpecs" class="specs-section">
+              <div class="specs-grid">
+                <div>
+                  <label for="mobo-socket">Сокет</label>
+                  <select id="mobo-socket" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="lga1700">LGA1700</option>
+                    <option value="am5">AM5</option>
+                    <option value="am4">AM4</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="mobo-form">Форм-фактор</label>
+                  <select id="mobo-form" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="atx">ATX</option>
+                    <option value="micro-atx">Micro-ATX</option>
+                    <option value="mini-itx">Mini-ITX</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="mobo-ram-slots">Слотів RAM</label>
+                  <input type="number" id="mobo-ram-slots" class="spec-field" placeholder="Слотів RAM" min="1">
+                </div>
+              </div>
+            </div>
+
+            <div id="psuSpecs" class="specs-section">
+              <div class="specs-grid">
+                <div>
+                  <label for="psu-power">Потужність (W)</label>
+                  <input type="number" id="psu-power" class="spec-field" placeholder="Потужність у ватах" min="1">
+                </div>
+                <div>
+                  <label for="psu-type">Тип</label>
+                  <select id="psu-type" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="modular">Модульний</option>
+                    <option value="semi-modular">Напів-модульний</option>
+                    <option value="non-modular">Немодульний</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="psu-efficiency">Сертифікація</label>
+                  <select id="psu-efficiency" class="spec-field">
+                    <option value="">Виберіть</option>
+                    <option value="80gold">80+ Gold</option>
+                    <option value="80platinum">80+ Platinum</option>
+                    <option value="80titanium">80+ Titanium</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-form-actions">
+            <button id="productSubmitBtn" type="submit" class="btn btn-primary">Додати товар</button>
+            <button id="cancelEditProductBtn" type="button" class="btn btn-secondary" onclick="cancelProductEdit()">Скасувати</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="admin-panel-card">
+        <h3>Список товарів</h3>
+        <div id="productsList" class="admin-scroll-wrap">
+          <p class="admin-muted-text">Завантаження товарів...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="ordersTab" class="admin-tab-content">
+      <h2>Управління замовленнями</h2>
+
+      <div class="admin-panel-card">
+        <h3>Список замовлень</h3>
+        <div id="ordersList" class="admin-stack-list">
+          <p class="admin-muted-text">Завантаження замовлень...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="reviewsTab" class="admin-tab-content">
+      <h2>Управління відгуками</h2>
+
+      <div class="admin-panel-card admin-panel-spacing">
+        <h3 id="reviewFormTitle">Виберіть відгук для редагування</h3>
+        <form id="editReviewForm" onsubmit="handleReviewSave(event)">
+          <div class="admin-form-grid">
+            <input type="text" id="review-product" placeholder="Товар" disabled>
+            <input type="text" id="review-author" placeholder="Автор" disabled>
+            <input type="number" id="review-rating" placeholder="Оцінка (1-5)" min="1" max="5" required>
+            <input type="text" id="review-title" placeholder="Заголовок (необов'язково)">
+            <textarea id="review-comment" class="span-full" placeholder="Текст відгуку" rows="3"></textarea>
+          </div>
+
+          <div class="admin-form-actions">
+            <button id="reviewSubmitBtn" type="submit" class="btn btn-primary">Зберегти відгук</button>
+            <button id="cancelEditReviewBtn" type="button" class="btn btn-secondary" onclick="cancelReviewEdit()">Скасувати</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="admin-panel-card">
+        <h3>Список відгуків</h3>
+        <div id="reviewsList" class="admin-scroll-wrap">
+          <p class="admin-muted-text">Завантаження відгуків...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contactsTab" class="admin-tab-content">
+      <h2>Повідомлення від клієнтів</h2>
+
+      <div class="admin-panel-card">
+        <h3>Отримані повідомлення</h3>
+        <div id="contactsList" class="admin-stack-list">
+          <p class="admin-muted-text">Завантаження контактів...</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>© 2026 SudoHardware. Усі права захищені.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="js/filters-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

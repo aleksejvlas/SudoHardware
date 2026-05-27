@@ -1,0 +1,160 @@
+﻿<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Особистий кабінет — SudoHardware</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-flex">
+      <div class="logo-area">
+        <h1 class="logo">SudoHardware</h1>
+      </div>
+
+      <button
+        id="mobileMenuBtn"
+        class="mobile-menu-btn"
+        aria-label="Меню"
+        type="button"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html">Головна</a>
+        <a href="products.html">Каталог</a>
+        <a href="index.html#contact">Контакти</a>
+      </nav>
+      <div class="header-actions">
+        <button id="cartBtn" class="cart-btn">
+          <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          </span>
+          <span class="cart-text">Кошик</span>
+          <span id="cartCount" class="badge">0</span>
+        </button>
+        <button id="authBtn" class="btn btn-outline">Увійти</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container profile-main">
+    <div class="profile-shell">
+      <section class="profile-card">
+        <div class="profile-header-row">
+          <div class="profile-avatar" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+
+          <div class="profile-meta">
+            <h2 id="profileUsername" class="profile-username">Завантаження...</h2>
+            <p id="profileEmail" class="profile-email">email@example.com</p>
+            <p id="profileRole" class="profile-role">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: text-bottom;"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              Користувач
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="profile-tabs">
+        <button id="ordersTab" class="tab-btn profile-tab-btn active" onclick="switchProfileTab('orders')">
+          Замовлення
+        </button>
+        <button id="settingsTab" class="tab-btn profile-tab-btn" onclick="switchProfileTab('settings')">
+          Налаштування
+        </button>
+      </div>
+
+      <section id="ordersContent" class="profile-tab-content is-visible">
+        <div class="profile-card">
+          <h3 class="profile-section-title">Ваші замовлення</h3>
+          <p id="ordersMessage" class="profile-muted">Завантаження замовлень...</p>
+          <div id="ordersList" class="profile-orders-list"></div>
+        </div>
+      </section>
+
+      <section id="settingsContent" class="profile-tab-content">
+        <div class="profile-card">
+          <h3 class="profile-section-title">Налаштування облікового запису</h3>
+
+          <div id="adminSection" class="profile-admin-panel">
+            <p class="profile-admin-label">АДМІНІСТРАТИВНА ПАНЕЛЬ</p>
+            <p class="profile-muted">Ви маєте права адміністратора. Керуйте товарами, замовленнями та контактами.</p>
+            <a href="admin.html" class="btn btn-primary profile-admin-link">Перейти до адмін-панелі</a>
+          </div>
+
+          <div class="profile-settings-block">
+            <h4>Інформація профілю</h4>
+            <div class="profile-info-grid">
+              <div class="form-group">
+                <label for="settingsUsername">Ім'я користувача:</label>
+                <input type="text" id="settingsUsername" class="profile-readonly" disabled>
+              </div>
+              <div class="form-group">
+                <label for="settingsEmail">Email-адреса:</label>
+                <input type="email" id="settingsEmail" class="profile-readonly" disabled>
+              </div>
+              <div class="form-group">
+                <label for="settingsRole">Роль:</label>
+                <input type="text" id="settingsRole" class="profile-readonly" disabled>
+              </div>
+              <div class="form-group">
+                <label for="settingsPhone">Телефон (необов'язково):</label>
+                <input type="tel" id="settingsPhone" placeholder="+380991234567">
+              </div>
+              <div class="form-group profile-wide">
+                <label for="settingsDefaultAddress">Адреса за замовчуванням (необов'язково):</label>
+                <textarea id="settingsDefaultAddress" rows="3" placeholder="м. Київ, вул. Хрещатик, 1"></textarea>
+              </div>
+              <button id="saveProfileBtn" class="btn btn-primary" type="button" onclick="saveProfile()">
+                Зберегти зміни
+              </button>
+            </div>
+          </div>
+
+          <div class="profile-security">
+            <h4>Безпека</h4>
+            <p class="profile-muted">Дата реєстрації: <strong id="profileCreatedAt">—</strong></p>
+            <button id="logoutBtn" class="btn btn-secondary profile-logout" onclick="handleLogout()">
+              Вийти з акаунту
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="cartModal" class="cart-modal" aria-hidden="true">
+    <div class="cart-panel modern-glass">
+      <button id="closeCart" class="close">✕</button>
+      <h3>Ваш кошик</h3>
+      <div id="cart-container" class="cart-items-list"></div>
+      <div class="cart-footer">
+        <div class="cart-summary">
+          <div class="summary-line">Разом: <strong id="cartTotal">0</strong> грн</div>
+        </div>
+        <button id="checkoutBtn" class="btn btn-primary w-100" onclick="checkout()">Оформити замовлення</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>© 2026 SudoHardware. Усі права захищені.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

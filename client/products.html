@@ -1,0 +1,249 @@
+﻿<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Каталог — SudoHardware</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="catalog-page">
+  <header class="site-header">
+    <div class="container header-flex">
+      <div class="logo-area">
+        <h1 class="logo">SudoHardware</h1>
+      </div>
+
+      <button
+        id="mobileMenuBtn"
+        class="mobile-menu-btn"
+        aria-label="Меню"
+        type="button"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html">Головна</a>
+        <a href="products.html" class="active">Каталог</a>
+        <a href="index.html#contact">Контакти</a>
+      </nav>
+      <div class="header-actions">
+        <button id="cartBtn" class="cart-btn">
+          <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          </span>
+          <span class="cart-text">Кошик</span>
+          <span id="cartCount" class="badge">0</span>
+        </button>
+        <button id="authBtn" class="btn btn-outline">Увійти</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container catalog-layout">
+    <button id="filtersToggleBtn" class="filters-toggle" aria-label="Відкрити фільтри">
+      Фільтри
+    </button>
+
+    <aside class="filters-sidebar">
+      <div class="filter-group">
+        <h3>Фільтри</h3>
+        <input type="text" id="search" placeholder="Назва товару..." class="modern-input">
+      </div>
+
+      <div class="filter-group">
+        <h3>Категорії</h3>
+        <div id="categoryFilters" class="filter-options">
+          <label><input type="checkbox" value="cpu"> Процесори (CPU)</label>
+          <label><input type="checkbox" value="gpu"> Відеокарти (GPU)</label>
+          <label><input type="checkbox" value="ram"> Пам'ять (RAM)</label>
+          <label><input type="checkbox" value="ssd"> SSD накопичувачі</label>
+          <label><input type="checkbox" value="hdd"> HDD накопичувачі</label>
+          <label><input type="checkbox" value="mobo"> Материнські плати</label>
+          <label><input type="checkbox" value="psu"> Блоки живлення</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h3>Ціна</h3>
+        <select id="sortSelect" class="modern-input">
+          <option value="default">За замовчуванням</option>
+          <option value="price-asc">Ціна: від дешевших</option>
+          <option value="price-desc">Ціна: від дорожчих</option>
+          <option value="name-asc">Назва: А-Я</option>
+        </select>
+      </div>
+
+      <div id="subFilters" class="sub-filters">
+        <div id="cpuFilters" class="sub-filter-group">
+          <h4 class="sub-filter-title">Виробник</h4>
+          <div class="filter-options" id="cpuManufacturerOptions">
+            <label><input type="checkbox" name="cpu-manufacturer" value="Intel"> Intel</label>
+            <label><input type="checkbox" name="cpu-manufacturer" value="AMD"> AMD</label>
+          </div>
+
+          <h4 class="sub-filter-title sub-filter-title-spaced">Кількість ядер</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="cpu-cores" value="4"> 4 ядра</label>
+            <label><input type="checkbox" name="cpu-cores" value="6"> 6 ядер</label>
+            <label><input type="checkbox" name="cpu-cores" value="8"> 8 ядер</label>
+            <label><input type="checkbox" name="cpu-cores" value="10"> 10 ядер</label>
+            <label><input type="checkbox" name="cpu-cores" value="12"> 12 ядер</label>
+            <label><input type="checkbox" name="cpu-cores" value="16"> 16 ядер</label>
+            <label><input type="checkbox" name="cpu-cores" value="24"> 24 ядра</label>
+          </div>
+
+          <h4 class="sub-filter-title sub-filter-title-spaced">Сокет</h4>
+          <div class="filter-options" id="cpuSocketOptions">
+            <label><input type="checkbox" name="cpu-socket" value="LGA1700"> LGA1700</label>
+            <label><input type="checkbox" name="cpu-socket" value="AM5"> AM5</label>
+            <label><input type="checkbox" name="cpu-socket" value="AM4"> AM4</label>
+          </div>
+        </div>
+
+        <div id="gpuFilters" class="sub-filter-group">
+          <h4 class="sub-filter-title">Виробник</h4>
+          <div class="filter-options" id="gpuManufacturerOptions">
+            <label><input type="checkbox" name="gpu-manufacturer" value="NVIDIA"> NVIDIA</label>
+            <label><input type="checkbox" name="gpu-manufacturer" value="AMD"> AMD</label>
+          </div>
+
+          <h4 class="sub-filter-title sub-filter-title-spaced">Об'єм пам'яті</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="gpu-memory" value="8GB"> 8GB</label>
+            <label><input type="checkbox" name="gpu-memory" value="12GB"> 12GB</label>
+            <label><input type="checkbox" name="gpu-memory" value="16GB"> 16GB</label>
+            <label><input type="checkbox" name="gpu-memory" value="24GB"> 24GB</label>
+          </div>
+
+          <h4 class="sub-filter-title sub-filter-title-spaced">Серія</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="gpu-series" value="RTX 40"> RTX 40</label>
+            <label><input type="checkbox" name="gpu-series" value="RTX 30"> RTX 30</label>
+            <label><input type="checkbox" name="gpu-series" value="RX 7000"> RX 7000</label>
+            <label><input type="checkbox" name="gpu-series" value="RX 6000"> RX 6000</label>
+          </div>
+        </div>
+
+        <div id="ramFilters" class="sub-filter-group">
+          <h4 class="sub-filter-title">Тип</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="ram-type" value="DDR5"> DDR5</label>
+            <label><input type="checkbox" name="ram-type" value="DDR4"> DDR4</label>
+          </div>
+
+          <h4 class="sub-filter-title sub-filter-title-spaced">Об'єм</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="ram-capacity" value="16GB"> 16GB</label>
+            <label><input type="checkbox" name="ram-capacity" value="32GB"> 32GB</label>
+            <label><input type="checkbox" name="ram-capacity" value="64GB"> 64GB</label>
+          </div>
+
+          <h4 class="sub-filter-title sub-filter-title-spaced">Швидкість</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="ram-speed" value="5600MHz"> 5600MHz</label>
+            <label><input type="checkbox" name="ram-speed" value="6000MHz"> 6000MHz</label>
+            <label><input type="checkbox" name="ram-speed" value="6400MHz"> 6400MHz</label>
+          </div>
+        </div>
+
+        <div id="ssdFilters" class="sub-filter-group">
+          <h4 class="sub-filter-title">Інтерфейс</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="ssd-interface" value="NVMe M.2"> NVMe M.2</label>
+            <label><input type="checkbox" name="ssd-interface" value="SATA M.2"> SATA M.2</label>
+          </div>
+
+          <h4 class="sub-filter-title sub-filter-title-spaced">Об'єм</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="ssd-capacity" value="500GB"> 500GB</label>
+            <label><input type="checkbox" name="ssd-capacity" value="1TB"> 1TB</label>
+            <label><input type="checkbox" name="ssd-capacity" value="2TB"> 2TB</label>
+            <label><input type="checkbox" name="ssd-capacity" value="4TB"> 4TB</label>
+          </div>
+        </div>
+
+        <div id="hddFilters" class="sub-filter-group">
+          <h4 class="sub-filter-title">Формат</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="hdd-formfactor" value="3.5\" HDD"> 3.5" HDD</label>
+            <label><input type="checkbox" name="hdd-formfactor" value="2.5\" HDD"> 2.5" HDD</label>
+          </div>
+
+          <h4 class="sub-filter-title sub-filter-title-spaced">Об'єм</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="hdd-capacity" value="500GB"> 500GB</label>
+            <label><input type="checkbox" name="hdd-capacity" value="1TB"> 1TB</label>
+            <label><input type="checkbox" name="hdd-capacity" value="2TB"> 2TB</label>
+            <label><input type="checkbox" name="hdd-capacity" value="4TB"> 4TB</label>
+          </div>
+        </div>
+
+        <div id="moboFilters" class="sub-filter-group">
+          <h4 class="sub-filter-title">Сокет</h4>
+          <div class="filter-options" id="moboSocketOptions">
+            <label><input type="checkbox" name="mobo-socket" value="LGA1700"> LGA1700</label>
+            <label><input type="checkbox" name="mobo-socket" value="AM5"> AM5</label>
+            <label><input type="checkbox" name="mobo-socket" value="AM4"> AM4</label>
+          </div>
+
+          <h4 class="sub-filter-title sub-filter-title-spaced">Тип</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="mobo-formfactor" value="ATX"> ATX</label>
+            <label><input type="checkbox" name="mobo-formfactor" value="Micro-ATX"> Micro-ATX</label>
+            <label><input type="checkbox" name="mobo-formfactor" value="Mini-ITX"> Mini-ITX</label>
+          </div>
+        </div>
+
+        <div id="psuFilters" class="sub-filter-group">
+          <h4 class="sub-filter-title">Потужність</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="psu-wattage" value="550W"> 550W</label>
+            <label><input type="checkbox" name="psu-wattage" value="650W"> 650W</label>
+            <label><input type="checkbox" name="psu-wattage" value="750W"> 750W</label>
+            <label><input type="checkbox" name="psu-wattage" value="850W"> 850W</label>
+            <label><input type="checkbox" name="psu-wattage" value="1000W"> 1000W</label>
+          </div>
+
+          <h4 class="sub-filter-title sub-filter-title-spaced">Сертифікація</h4>
+          <div class="filter-options">
+            <label><input type="checkbox" name="psu-certification" value="80+ Bronze"> 80+ Bronze</label>
+            <label><input type="checkbox" name="psu-certification" value="80+ Gold"> 80+ Gold</label>
+            <label><input type="checkbox" name="psu-certification" value="80+ Platinum"> 80+ Platinum</label>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="products-container">
+      <div class="catalog-header">
+        <h2>Усі комплектуючі</h2>
+        <span id="itemsFound" class="items-count">Завантажуємо...</span>
+      </div>
+      <div id="products-container" class="products-grid"></div>
+    </section>
+  </main>
+
+  <div id="cartModal" class="cart-modal" aria-hidden="true">
+    <div class="cart-panel modern-glass">
+      <button id="closeCart" class="close">✕</button>
+      <h3>Ваш кошик</h3>
+      <div id="cart-container" class="cart-items-list"></div>
+      <div class="cart-footer">
+        <div class="cart-summary">
+          <div class="summary-line">Разом: <strong id="cartTotal">0</strong> грн</div>
+        </div>
+        <button id="checkoutBtn" class="btn btn-primary w-100" onclick="checkout()">Оформити замовлення</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="js/filters-config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

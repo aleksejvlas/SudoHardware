@@ -1,0 +1,687 @@
+﻿<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Деталі товару — SudoHardware</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .product-detail-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-detail-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      padding: 2rem 0;
+    }
+
+    .product-detail-image {
+      position: sticky;
+      top: 2rem;
+      height: fit-content;
+    }
+
+    .product-detail-image img {
+      width: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .product-detail-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .product-detail-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .product-detail-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .product-detail-category {
+      color: var(--primary);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .product-detail-description {
+      color: var(--text-muted);
+      line-height: 1.6;
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .product-specs-detail {
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .product-specs-detail h4 {
+      margin-bottom: 1rem;
+      color: var(--text-main);
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .spec-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    .spec-value {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .product-pricing {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .price-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .price-label {
+      font-size: 0.875rem;
+      color: var(--text-dim);
+    }
+
+    .product-price-detail {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stock-badge {
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .stock-badge.in-stock {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .stock-badge.out-of-stock {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      flex: 1;
+      min-width: 150px;
+      padding: 1rem;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary-action {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary-action:hover {
+      background: var(--primary-light);
+    }
+
+    .btn-primary-action:disabled {
+      background: var(--text-dim);
+      cursor: not-allowed;
+    }
+
+    /* Reviews Section */
+    .reviews-section {
+      margin-top: 3rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .reviews-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .reviews-header h3 {
+      font-size: 1.5rem;
+      color: var(--text-main);
+    }
+
+    .reviews-stats {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .rating-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .rating-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .rating-stars {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .star {
+      font-size: 1.25rem;
+      color: var(--text-dim);
+    }
+
+    .star.filled {
+      color: #fbbf24;
+    }
+
+    .rating-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .rating-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .rating-bar-label {
+      width: 50px;
+      text-align: right;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .rating-bar-fill {
+      flex: 1;
+      height: 8px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .rating-bar-progress {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
+    .rating-bar-count {
+      width: 40px;
+      text-align: right;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    /* Review Form */
+    .review-form-container {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .review-form-title {
+      font-size: 1.25rem;
+      color: var(--text-main);
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      font-size: 1rem;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    }
+
+    .rating-input {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .rating-input label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .rating-input input {
+      cursor: pointer;
+    }
+
+    .btn-submit-review {
+      width: 100%;
+      padding: 0.75rem 1.5rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn-submit-review:hover {
+      background: var(--primary-light);
+    }
+
+    .btn-submit-review:disabled {
+      background: var(--text-dim);
+      cursor: not-allowed;
+    }
+
+    /* Reviews List */
+    .reviews-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .review-card {
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .review-author {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .review-date {
+      color: var(--text-dim);
+      font-size: 0.875rem;
+    }
+
+    .review-rating {
+      display: flex;
+      gap: 0.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .review-title {
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .review-comment {
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .review-footer {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .helpful-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.3s ease;
+    }
+
+    .helpful-btn:hover {
+      color: var(--primary);
+    }
+
+    .no-reviews {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-dim);
+    }
+
+    @media (max-width: 768px) {
+      .product-detail-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .product-detail-image {
+        position: static;
+      }
+
+      .product-detail-title {
+        font-size: 1.5rem;
+      }
+
+      .specs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .reviews-stats {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .reviews-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .rating-bars {
+        width: 100%;
+      }
+
+      .rating-input {
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .btn-action {
+        width: 100%;
+      }
+
+      .product-pricing {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.9rem;
+      }
+
+      .review-header {
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+
+      .review-footer {
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .product-detail-container {
+        gap: 1.2rem;
+        padding: 1rem 0;
+      }
+
+      .product-detail-description,
+      .product-specs-detail,
+      .product-pricing,
+      .review-form-container,
+      .review-card {
+        padding: 1rem;
+      }
+
+      .product-price-detail,
+      .rating-number {
+        font-size: 1.55rem;
+      }
+    }
+  </style>
+</head>
+<body class="product-detail-page">
+  <header class="site-header">
+    <div class="container header-flex">
+      <div class="logo-area">
+        <h1 class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">SudoHardware</a></h1>
+      </div>
+
+      <button
+        id="mobileMenuBtn"
+        class="mobile-menu-btn"
+        aria-label="Меню"
+        type="button"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html">Головна</a>
+        <a href="products.html">Каталог</a>
+        <a href="index.html#contact">Контакти</a>
+      </nav>
+      <div class="header-actions">
+        <button id="cartBtn" class="cart-btn">
+          <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+          </span>
+          <span class="cart-text">Кошик</span>
+          <span id="cartCount" class="badge">0</span>
+        </button>
+        <button id="authBtn" class="btn btn-outline">Увійти</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="loadingSpinner" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+      <p>Завантажуємо товар...</p>
+    </div>
+
+    <div id="productContent" style="display: none;">
+      <div class="product-detail-container">
+        <div class="product-detail-image">
+          <img id="productImage" src="" alt="">
+        </div>
+
+        <div class="product-detail-info">
+          <div class="product-detail-header">
+            <span id="productCategory" class="product-detail-category"></span>
+            <h1 id="productName" class="product-detail-title"></h1>
+          </div>
+
+          <p id="productDescription" class="product-detail-description"></p>
+
+          <div id="specsContainer" class="product-specs-detail">
+            <h4>Технічні характеристики</h4>
+            <div id="specsList" class="specs-grid"></div>
+          </div>
+
+          <div class="product-pricing">
+            <div class="price-section">
+              <span class="price-label">Ціна</span>
+              <span id="productPrice" class="product-price-detail"></span>
+            </div>
+            <span id="stockStatus" class="stock-badge"></span>
+          </div>
+
+          <div class="action-buttons">
+            <button id="addToCartBtn" class="btn btn-action btn-primary-action">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: text-bottom;">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+              Додати до кошика
+            </button>
+            <button class="btn btn-action btn-outline" onclick="window.history.back()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: text-bottom;">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              Назад до каталогу
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="reviews-section">
+        <div class="reviews-header">
+          <h3>Відгуки користувачів</h3>
+          <div class="reviews-stats">
+            <div class="rating-display">
+              <div class="rating-number" id="avgRating">0</div>
+              <div class="rating-stars" id="avgRatingStars"></div>
+              <div style="font-size: 0.875rem; color: var(--text-dim);">
+                <span id="totalReviews">0</span> відгуків
+              </div>
+            </div>
+            <div class="rating-bars" id="ratingDistribution"></div>
+          </div>
+        </div>
+
+        <div class="review-form-container">
+          <h4 class="review-form-title">Залишити відгук</h4>
+          <form id="reviewForm">
+            <div class="form-group">
+              <label class="form-label">Ваше ім'я *</label>
+              <input type="text" id="authorName" class="form-input" required placeholder="Введіть ваше ім'я">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Оцінка *</label>
+              <div class="rating-input">
+                <label><input type="radio" name="rating" value="5" required> ★★★★★ Відмінно</label>
+                <label><input type="radio" name="rating" value="4"> ★★★★ Добре</label>
+                <label><input type="radio" name="rating" value="3"> ★★★ Нормально</label>
+                <label><input type="radio" name="rating" value="2"> ★★ Погано</label>
+                <label><input type="radio" name="rating" value="1"> ★ Дуже погано</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Заголовок відгуку (опціонально)</label>
+              <input type="text" id="reviewTitle" class="form-input" placeholder="Коротка назва вашого відгуку">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Ваш відгук (опціонально)</label>
+              <textarea id="reviewComment" class="form-textarea" placeholder="Поділіться вашим досвідом використання цього товару..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit-review">Опублікувати відгук</button>
+          </form>
+        </div>
+
+        <div id="reviewsList" class="reviews-list">
+          <div class="no-reviews">Ще немає відгуків. Будьте перші!</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="cartModal" class="cart-modal" aria-hidden="true">
+    <div class="cart-panel modern-glass">
+      <button id="closeCart" class="close">✕</button>
+      <h3>Ваш кошик</h3>
+      <div id="cart-container" class="cart-items-list"></div>
+      <div class="cart-footer">
+        <div class="cart-summary">
+          <div class="summary-line">Разом: <strong id="cartTotal">0</strong> грн</div>
+        </div>
+        <button id="checkoutBtn" class="btn btn-primary w-100" onclick="checkout()">Оформити замовлення</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/product-detail.js"></script>
+</body>
+</html>

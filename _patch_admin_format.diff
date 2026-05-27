@@ -1,0 +1,18 @@
+﻿*** Begin Patch
+*** Update File: C:\Users\vlase\Desktop\Dyplom\client\js\admin.js
+@@
+-const ADMIN_API_BASE_URL = window.API_BASE_URL || 'http://localhost:3000/api';
++const ADMIN_API_BASE_URL = window.API_BASE_URL || 'http://localhost:3000/api';
++const baseFormatPrice = typeof window.formatPrice === 'function' ? window.formatPrice : null;
+@@
+-function formatPrice(value) {
+-  if (window.formatPrice) return window.formatPrice(value);
+-  return `₴${toNumber(value, 0).toFixed(2)}`;
+-}
++function formatPrice(value) {
++  if (baseFormatPrice && baseFormatPrice !== formatPrice) {
++    return baseFormatPrice(value);
++  }
++  return `₴${toNumber(value, 0).toFixed(2)}`;
++}
+*** End Patch
