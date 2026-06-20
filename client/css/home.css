@@ -1,0 +1,176 @@
+.hero {
+  padding: 1.7rem 0 1.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-grid {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.hero-text {
+  display: grid;
+  gap: 0.82rem;
+}
+
+.hero-text h1 {
+  font-size: clamp(1.7rem, 6.2vw, 3rem);
+  letter-spacing: -0.02em;
+}
+
+.hero-text h1::before {
+  content: "SudoHardware";
+  display: block;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.45rem;
+  color: var(--primary-light);
+  font-family: var(--font-mono);
+}
+
+.text-gradient {
+  color: var(--primary-light);
+}
+
+.hero-text p {
+  max-width: 66ch;
+  color: var(--text-muted);
+}
+
+.tag {
+  display: inline-flex;
+  width: fit-content;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--primary-light);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.22rem 0.56rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hero-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.hero-visual {
+  display: none;
+}
+
+.hero-box-modern {
+  width: min(330px, 100%);
+  aspect-ratio: 1 / 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.abstract-shape {
+  position: absolute;
+  inset: -16px -16px auto auto;
+  width: 120px;
+  height: 120px;
+  border: 1px dashed #1f2f4f;
+  border-radius: var(--radius-md);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+main > section,
+.features-section,
+.featured-section,
+.categories-section,
+.contact-section {
+  margin: 1.5rem 0;
+}
+
+.section-header {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.9rem;
+}
+
+.section-header h2 {
+  font-size: clamp(1.15rem, 3.5vw, 1.8rem);
+  letter-spacing: -0.01em;
+}
+
+.section-header h2::before {
+  content: ">_ SudoHardware";
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--primary);
+  font: 500 0.74rem/1 var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+.section-header p {
+  color: var(--text-dim);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.feature-card {
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 0.95rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.feature-card:hover {
+  border-color: var(--primary);
+  background: #15151a;
+}
+
+.feature-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--primary-light);
+  border-radius: var(--radius-sm);
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.cat-card {
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--text-main);
+  padding: 0.9rem 0.7rem;
+  display: grid;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+.cat-card:hover {
+  border-color: var(--primary);
+  background: #171b26;
+}
+
+.cat-icon {
+  font-size: 1.5rem;
+}
+
+.contact-section {

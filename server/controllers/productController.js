@@ -6,6 +6,7 @@ const orderModel = require('../models/orderModel');
 const fs = require('fs/promises');
 const path = require('path');
 const crypto = require('crypto');
+const sharp = require('sharp');
 
 const PHOTOS_DIR = path.join(__dirname, '..', '..', 'photos');
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
@@ -15,6 +16,7 @@ const ALLOWED_IMAGE_TYPES = {
   'image/webp': 'webp',
   'image/gif': 'gif'
 };
+const OUTPUT_IMAGE_EXTENSION = 'webp';
 
 // ============= УТИЛІТНІ ФУНКЦІЇ ВАЛІДАЦІЇ =============
 
@@ -26,7 +28,32 @@ const ALLOWED_IMAGE_TYPES = {
 function isValidImageURL(url) {
   if (!url) return true; // Optional field
 
-  if (/^\/photos\/[a-zA-Z0-9._-]+$/.test(url)) {
+  if (typeof url !== 'string') {
+    return false;
+  }
+
+  if (url.startsWith('/photos/')) {
+    if (url.includes('\\') || url.includes('\0') || url.includes('?') || url.includes('#')) {
+      return false;
+    }
+
+    const relativePath = url.slice('/photos/'.length);
+    const segments = relativePath.split('/');
+    const hasInvalidSegment = segments.some(segment => {
+      if (!segment || segment === '.' || segment === '..') return true;
+
+      try {
+        const decodedSegment = decodeURIComponent(segment);
+        return decodedSegment === '.' || decodedSegment === '..';
+      } catch (e) {
+        return true;
+      }
+    });
+
+    if (!relativePath || relativePath.startsWith('/') || hasInvalidSegment) {
+      return false;
+    }
+
     return true;
   }
   
@@ -82,8 +109,7 @@ async function saveBase64Image(uploadData) {
   }
 
   const { file_name, mime_type, data } = uploadData;
-  const extension = ALLOWED_IMAGE_TYPES[mime_type];
-  if (!extension) {
+  if (!ALLOWED_IMAGE_TYPES[mime_type]) {
     throw new Error('Непідтримуваний формат зображення');
   }
 
@@ -107,11 +133,16 @@ async function saveBase64Image(uploadData) {
 
   await fs.mkdir(PHOTOS_DIR, { recursive: true });
 
+  const webpBuffer = await sharp(buffer)
+    .rotate()
+    .webp({ quality: 82 })
+    .toBuffer();
+
   const safeBaseName = path.parse(file_name).name.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 50) || 'product';
-  const fileName = `${safeBaseName}_${Date.now()}_${crypto.randomBytes(4).toString('hex')}.${extension}`;
+  const fileName = `${safeBaseName}_${Date.now()}_${crypto.randomBytes(4).toString('hex')}.${OUTPUT_IMAGE_EXTENSION}`;
   const filePath = path.join(PHOTOS_DIR, fileName);
 
-  await fs.writeFile(filePath, buffer);
+  await fs.writeFile(filePath, webpBuffer);
   return `/photos/${fileName}`;
 }
 

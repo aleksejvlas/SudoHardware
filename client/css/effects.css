@@ -1,0 +1,56 @@
+.featured-section .products-grid {
+  grid-template-columns: repeat(auto-fit, minmax(230px, 280px));
+  align-items: stretch;
+  justify-content: center;
+}
+
+/* Modern Glass Effect */
+.modern-glass {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Notification styles */
+.notification {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  animation: slideInRight 0.3s ease;
+}
+
+.notification.success {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid var(--success);
+  color: var(--success);
+}
+
+.notification.error {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+/* Анімація дихання та світіння для процесора на головній */
+@keyframes cpuPulse {
+  0% {
+    filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.2));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6));
+    transform: scale(1.02);
+  }
+  100% {
+    filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.2));
+    transform: scale(1);
+  }
+}
+
+.hero-svg-icon {
+  animation: cpuPulse 4s infinite ease-in-out;
+  overflow: visible; /* Щоб тінь від світіння не обрізалася краями контейнера */
+}
