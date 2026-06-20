@@ -3,7 +3,9 @@
 //  SECURITY: Loads database credentials from .env file (NEVER hardcoded!)
 
 require('dotenv').config();
+const fs = require('fs');
 const mysql = require('mysql2/promise');
+const { sqlFiles } = require('./paths');
 
 const setupDatabase = async () => {
   try {
@@ -33,6 +35,11 @@ const setupDatabase = async () => {
 
     // Вибір БД
     await connection.query('USE ??', [DB_NAME]);
+
+    const availableSqlFiles = Object.values(sqlFiles)
+      .filter((filePath) => fs.existsSync(filePath))
+      .length;
+    console.log(` External SQL files found: ${availableSqlFiles}/${Object.keys(sqlFiles).length}`);
 
     // Таблиця товарів
     await connection.query(`

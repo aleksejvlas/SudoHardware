@@ -1,3 +1,4 @@
+.cart-modal,
 .checkout-modal {
   position: fixed;
   inset: 0;
@@ -7,6 +8,7 @@
 }
 
 .cart-modal {
+  align-items: stretch;
   justify-content: flex-end;
 }
 

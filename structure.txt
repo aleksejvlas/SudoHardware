@@ -5,13 +5,11 @@ C:.
 |   .env.example
 |   .gitignore
 |   BUGS_REPORT.md
-|   INSERT_PRODUCTS.sql
 |   package-lock.json
 |   package.json
 |   README.md
 |   server.js
 |   setup.sh
-|   SQL_USERS_TABLE.sql
 |   structure.txt
 |   _patch_admin_format.diff
 |   
